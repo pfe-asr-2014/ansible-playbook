@@ -1,0 +1,14 @@
+---
+- name: copy tsp-mooc-subscriber configuration
+  template: src=agent.j2 dest=/etc/mooc/agent.yml mode=0644 owner=root group=root
+- name: run tsp-mooc-server
+  docker: image=amousset/tsp-mooc-server
+          docker_api_version={{ docker_api_version }}
+          ports="{{ mooc_server_port }}:1883"
+          name=tsp-mooc-server
+- name: run tsp-mooc-subscriber
+  docker: image=amousset/tsp-mooc-subscriber
+          docker_api_version={{ docker_api_version }}
+          name=tsp-mooc-subscriber
+          links="tsp-mooc-server:tsp-mooc-server"
+          volumes="/etc/mooc/agent.yml:/app/agent.yml"

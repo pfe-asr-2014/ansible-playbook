@@ -1,0 +1,8 @@
+autosave_interval 60
+persistence true
+persistence_location /var/lib/mosquitto/
+log_dest stdout
+
+connection mooc
+address {{ mooc_server_host }}:{{ mooc_server_port }}
+topic {{ mooc_topic }}/

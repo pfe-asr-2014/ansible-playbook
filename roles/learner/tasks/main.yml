@@ -1,0 +1,35 @@
+---
+- name: run tsp-moocdb-postgres
+  docker: image=fmonniot/tsp-moocdb-postgres
+          docker_api_version={{ docker_api_version }}
+          name=tsp-moocdb-postgres
+- name: run tsp-moocdb-web
+  docker: image=fmonniot/tsp-moocdb-web
+          ports="{{ moocdb_port }}:80"
+          docker_api_version={{ docker_api_version }}
+          name=tsp-moocdb-web
+          links="tsp-moocdb-postgres:tsp-moocdb-postgres"
+- name: copy tsp-mooc-broker configuration
+  template: src=mosquitto.j2 dest=/etc/mooc/mosquitto.conf mode=0644 owner=root group=root
+- name: copy tsp-mooc-agent agent configuration
+  template: src=agent.j2 dest=/etc/mooc/agent.yml mode=0644 owner=root group=root
+- name: copy tsp-mooc-agent login configuration
+  template: src=login.j2 dest=/etc/mooc/login.yml mode=0644 owner=root group=root
+- name: run tsp-mooc-broker
+  docker: image=amousset/tsp-mooc-broker
+          docker_api_version={{ docker_api_version }}
+          name=tsp-mooc-broker
+          volumes="/etc/mooc/mosquitto.conf:/etc/mosquitto/mosquitto.conf"
+- name: run tsp-mooc-agent
+  docker: image=amousset/tsp-mooc-agent
+          name=tsp-mooc-agent
+          docker_api_version={{ docker_api_version }}
+          links="tsp-mooc-broker:tsp-mooc-broker"
+          volumes="/var/run/docker.sock:/var/run/docker.sock,/etc/mooc/agent.yml:/app/agent.yml,/etc/mooc/login.yml:/app/login.yml"
+- name: run tsp-mooc-overview
+  docker: image=fmonniot/tsp-mooc-overview
+          docker_api_version={{ docker_api_version }}
+          ports="{{ mooc_overview_port }}:5000"
+          name=tsp-mooc-overview
+          volumes="/var/run/docker.sock:/var/run/docker.sock"
+          env="HOST_IP={{ ansible_default_ipv4.address }}"

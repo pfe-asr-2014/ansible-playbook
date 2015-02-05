@@ -1,0 +1,3 @@
+mooc_server_host: tsp-mooc-server
+mooc_moodle_token_url: "{{ mooc_moodle_host }}/login/token.php"
+mooc_moodle_post_url: "{{ mooc_moodle_host }}/webservice/rest/server.php"

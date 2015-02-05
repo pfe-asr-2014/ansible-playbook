@@ -1,0 +1,13 @@
+---
+- name: add docker repo key
+  apt_key: keyserver=keyserver.ubuntu.com id=36A1D7869245C8950F966E92D8576A8BA88D21E9
+- name: add docker repo
+  apt_repository: repo='deb https://get.docker.com/ubuntu docker main' state=present
+- name: install latest version of docker
+  apt: pkg=lxc-docker state=latest update_cache=yes
+- name: install python-pip
+  easy_install: name=pip
+- name: install docker-py
+  pip: name=docker-py
+- name: create the configuration directory
+  file: path=/etc/mooc state=directory

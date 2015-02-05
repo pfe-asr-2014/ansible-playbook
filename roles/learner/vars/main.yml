@@ -1,0 +1,9 @@
+---
+mooc_overview_port: 5000
+moocdb_port: 80
+mooc_broker_host: tsp-mooc-broker
+mooc_filter: POST
+mooc_topic: mooc
+# used to authenticate to the moodle server
+mooc_moodle_username: "test"
+mooc_moodle_password: "moodle-1B"
