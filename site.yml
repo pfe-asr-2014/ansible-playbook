@@ -1,9 +1,3 @@
 ---
-- hosts: learners
-  remote_user: root
-  roles:
-      - learner
-- hosts: servers
-  remote_user: root
-  roles:
-      - server
+- include: learner.yml
+- include: server.yml

@@ -4,7 +4,10 @@
 - name: add docker repo
   apt_repository: repo='deb https://get.docker.com/ubuntu docker main' state=present
 - name: install latest version of docker
-  apt: pkg=lxc-docker state=latest update_cache=yes
+  apt: pkg={{ item }} state=latest update_cache=yes
+  with_items:
+      - lxc-docker
+      - python-setuptools
 - name: install python-pip
   easy_install: name=pip
 - name: install docker-py

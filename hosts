@@ -1,0 +1,11 @@
+[learners]
+178.62.107.180
+[learners:vars]
+mooc_server_host=178.62.107.180
+remote_user=root
+
+[servers]
+178.62.107.180
+[servers:vars]
+mooc_moodle_host=178.62.107.180
+remote_user=root

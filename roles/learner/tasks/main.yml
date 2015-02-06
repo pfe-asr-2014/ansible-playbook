@@ -1,20 +1,10 @@
 ---
-- name: run tsp-moocdb-postgres
-  docker: image=fmonniot/tsp-moocdb-postgres
-          docker_api_version={{ docker_api_version }}
-          name=tsp-moocdb-postgres
-- name: run tsp-moocdb-web
-  docker: image=fmonniot/tsp-moocdb-web
-          ports="{{ moocdb_port }}:80"
-          docker_api_version={{ docker_api_version }}
-          name=tsp-moocdb-web
-          links="tsp-moocdb-postgres:tsp-moocdb-postgres"
 - name: copy tsp-mooc-broker configuration
-  template: src=mosquitto.j2 dest=/etc/mooc/mosquitto.conf mode=0644 owner=root group=root
+  template: src=mosquitto.conf.j2 dest=/etc/mooc/mosquitto.conf mode=0644 owner=root group=root
 - name: copy tsp-mooc-agent agent configuration
-  template: src=agent.j2 dest=/etc/mooc/agent.yml mode=0644 owner=root group=root
+  template: src=agent.yml.j2 dest=/etc/mooc/agent.yml mode=0644 owner=root group=root
 - name: copy tsp-mooc-agent login configuration
-  template: src=login.j2 dest=/etc/mooc/login.yml mode=0644 owner=root group=root
+  template: src=login.yml.j2 dest=/etc/mooc/login.yml mode=0644 owner=root group=root
 - name: run tsp-mooc-broker
   docker: image=amousset/tsp-mooc-broker
           docker_api_version={{ docker_api_version }}
