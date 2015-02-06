@@ -1,11 +1,16 @@
 ---
 - name: copy tsp-mooc-subscriber configuration
   template: src=agent.yml.j2 dest=/etc/mooc/agent.yml mode=0644 owner=root group=root
+- name: copy mosquitto configuration
+  copy: src=mosquitto.conf
+        dest=/etc/mooc/mosquitto.conf
+        mode=0644 owner=root group=root
 - name: run tsp-mooc-server
-  docker: image=amousset/tsp-mooc-server
+  docker: image=sanji/docker-mosquitto
           docker_api_version={{ docker_api_version }}
           ports="{{ mooc_server_port }}:1883"
           name=tsp-mooc-server
+          volumes="/etc/mooc/mosquitto.conf:/mqtt/config/mosquitto.conf"
 - name: run tsp-mooc-subscriber
   docker: image=amousset/tsp-mooc-subscriber
           docker_api_version={{ docker_api_version }}

@@ -6,10 +6,10 @@
 - name: copy tsp-mooc-agent login configuration
   template: src=login.yml.j2 dest=/etc/mooc/login.yml mode=0644 owner=root group=root
 - name: run tsp-mooc-broker
-  docker: image=amousset/tsp-mooc-broker
+  docker: image=sanji/docker-mosquitto
           docker_api_version={{ docker_api_version }}
           name=tsp-mooc-broker
-          volumes="/etc/mooc/mosquitto.conf:/etc/mosquitto/mosquitto.conf"
+          volumes="/etc/mooc/mosquitto.conf:/mqtt/config/mosquitto.conf"
 - name: run tsp-mooc-agent
   docker: image=amousset/tsp-mooc-agent
           name=tsp-mooc-agent
